@@ -13,6 +13,7 @@
 #include "rotaryencoder.h"
 
 void setup() {
+  setup_re();
   Serial.begin(9600);
 
   attachInterrupt(0, when_interrupt, CHANGE); // pin2(a)
