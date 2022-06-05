@@ -1,6 +1,14 @@
 #include <Arduino.h>
 #include "rotaryencoder.h"
 
+void setup_re() {
+  a = 0;          // A相の値
+  b = 0;          // B相の値
+  previous_a = 0; // 過去のA相の値
+  previous_b = 0; // 過去のB相の値
+  rotate_direction = d_still; // ロータリーエンコーダの回転方向。判定結果を入れる。
+  flag_interrupt = false;  // 割り込みがあったときのフラグ
+}
 
 void when_interrupt() {
   flag_interrupt = true;
@@ -25,7 +33,7 @@ void when_interrupt() {
     default:
       rotate_direction = d_still;
       break;
-  }
+  } // TODO Do something for chattaring
   
   // update previous values
   previous_a = a;

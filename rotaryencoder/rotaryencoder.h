@@ -11,12 +11,12 @@
  *  ref for circuit: https://monorepi.jp/archives/1440
  */
 
-#ifndef QUX_ROTARY_ENCODER
-#define QUX_ROTARY_ENCODER
-#include <Arduino.h>
+#ifndef ROTARY_ENCODER
+#define ROTARY_ENCODER
+#include "Arduino.h"
 
 // pin difinition
-#define pin_a 2
+#define pin_a 2 // TODO value should be determined according to the board type
 #define pin_b 3
 
 // define rotate directions
@@ -24,11 +24,15 @@
 #define d_right 1
 #define d_left  2
 
-int a = 0;          // A相の値
-int b = 0;          // B相の値
-int previous_a = 0; // 過去のA相の値
-int previous_b = 0; // 過去のB相の値
-byte rotate_direction = d_still; // ロータリーエンコーダの回転方向。判定結果を入れる。
-boolean flag_interrupt = false;  // 割り込みがあったときのフラグ
+int a;          // A相の値
+int b;          // B相の値
+int previous_a; // 過去のA相の値
+int previous_b; // 過去のB相の値
+byte rotate_direction; // ロータリーエンコーダの回転方向。判定結果を入れる。
+boolean flag_interrupt;  // 割り込みがあったときのフラグ
 
+void setup_re();
 void when_interrupt();
+
+#endif
+
