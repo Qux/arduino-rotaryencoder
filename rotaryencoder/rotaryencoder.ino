@@ -9,6 +9,9 @@
  *  used rotary encoder: https://akizukidenshi.com/catalog/g/gP-00292/
  *  ref for program: http://219.117.208.26/~saka/ham/rotary_encoder/
  *  ref for circuit: https://monorepi.jp/archives/1440
+ *  
+ *  
+ *  devwholeブランチでは、全てinoファイルでとりあえず作る。Arduinoライブラリ化は二の次。
  */
 // pin difinition
 #define pin_a 2
