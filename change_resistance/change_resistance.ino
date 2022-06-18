@@ -1,3 +1,4 @@
+
 /* test of totary encoder
  *  
  *  # Arduinoとの接続:
@@ -22,17 +23,25 @@
  *  
  *  used digital potentiometer: MCP4018T-103E/LT https://akizukidenshi.com/catalog/g/gI-07610/
  *  ref: https://www.shujima.work/entry/2018/10/07/221909
+ *  I2C address: ‘0101111’ or '0x2F'
  *  
  *  devwholeブランチでは、全てinoファイルでとりあえず作る。Arduinoライブラリ化は二の次。
  */
-// pin difinition
+
+#include <Wire.h>
+
+// rotary encoder
+//// pin difinition
 #define pin_a 2
 #define pin_b 3
-
-// define rotate directions
+//// define rotate directions
 #define d_still 0
 #define d_right 1
 #define d_left  2
+
+// digital potentiometer
+//// pin difinition
+#define pin_monitor_r 0
 
 // variables for rotary_encoder
 int a = 0;          // A相の値
@@ -49,7 +58,7 @@ void setup() {
   setup_rotary_encoder();
   setup_digital_potentiometer();
   Serial.begin(9600);
-
+  Wire.begin();
   
 }
 
@@ -57,15 +66,17 @@ void loop() {
   if (flag_interrupt == true) {
     switch (rotate_direction) {
       case d_still:
-        Serial.println("still");
+        debug_println("still");
         break;
       case d_right:
-        Serial.println("right");
+        debug_println("right");
         break;
       case d_left:
-        Serial.println("left");
+        debug_println("left");
         break;
     }
     flag_interrupt = false;
   }
+
+  loop_set_resistance();
 }
