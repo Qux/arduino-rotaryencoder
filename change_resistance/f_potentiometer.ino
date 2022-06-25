@@ -6,17 +6,16 @@
 
 void setup_digital_potentiometer() {
   pinMode(A0, INPUT);
-  // TODO: setup I2C. I2C address is fixed at 0x2F
-
+  num_potentiometer = 0;
 }
 
 void set_resistance(int num) {
-  Wire.beginTransmission(0x2F);
-  Wire.write(num);
-  Wire.endTransmission();
+  i2c_write(i2c_addr_MCP4018, num);
 
-  debug_print("resistance set (");
-  debug_print(num / 127.0 * 10.0);
+  debug_print("resistance set ");
+  debug_print(num);
+  debug_print(" (");
+  debug_print(num / (potentio_steps-1.0) * entire_res);
   debug_println(" k Ohm)");
 }
 
@@ -25,18 +24,22 @@ void get_resistance() { // TODO: change type into int and return a value
   debug_print("analogRead = ");
   debug_print(r);
   debug_print(" ( ");
-  debug_print(r / 1024.0 * 5.0);
+  debug_print(r / 1023.0 * 5.0);
   debug_println(" [V]");
 }
 
 void loop_set_resistance() {
-  static int i = 10; // WARN: static
+  static int i = 0; // WARN: static
+
+  debug_print("\n[debug] i = ");
+  debug_println(i);
+
   set_resistance(i);
   get_resistance();
-  i += 10;
+  i += 1;
   
-  if (i >= 1200) {
+  if (i >= potentio_steps) {
     i = 0;
   }
-  delay(500);
+  delay(100);
 }

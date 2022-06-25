@@ -42,15 +42,20 @@
 // digital potentiometer
 //// pin difinition
 #define pin_monitor_r 0
+//// parameters
+#define potentio_steps 128
+#define entire_res 10.0 // k Ohm
+#define i2c_addr_MCP4018 0x2F
 
 // variables for rotary_encoder
-int a = 0;          // A相の値
-int b = 0;          // B相の値
-int previous_a = 0; // 過去のA相の値
-int previous_b = 0; // 過去のB相の値
-byte rotate_direction = d_still; // ロータリーエンコーダの回転方向。判定結果を入れる。
-boolean flag_interrupt = false;  // 割り込みがあったときのフラグ
-
+volatile int a = 0;          // A相の値
+volatile int b = 0;          // B相の値
+volatile int previous_a = 0; // 過去のA相の値
+volatile int previous_b = 0; // 過去のB相の値
+volatile byte rotate_direction = d_still; // ロータリーエンコーダの回転方向。判定結果を入れる。
+volatile bool flag_interrupt = false;  // 割り込みがあったときのフラグ
+// variables for digital_potentiometer
+int num_potentiometer = 0;
 
 
 
@@ -64,19 +69,20 @@ void setup() {
 
 void loop() {
   if (flag_interrupt == true) {
-    switch (rotate_direction) {
-      case d_still:
-        debug_println("still");
-        break;
-      case d_right:
-        debug_println("right");
-        break;
-      case d_left:
-        debug_println("left");
-        break;
+    num_potentiometer += interpret_rotation();
+    // if num_potentiometer is out of range, adjust the number.
+    if (num_potentiometer >= (potentio_steps - 1)) { 
+      num_potentiometer = potentio_steps - 1;
+    } else if (num_potentiometer <= 0) {
+      num_potentiometer = 0;
     }
+    debug_print("num_potentiometer = ");
+    debug_println(num_potentiometer);
+
+    set_resistance(num_potentiometer);
+    get_resistance();
     flag_interrupt = false;
   }
 
-  loop_set_resistance();
+  // loop_set_resistance();
 }
