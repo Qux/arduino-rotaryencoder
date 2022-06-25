@@ -30,6 +30,7 @@
 
 #include <Wire.h>
 
+#define debug_mode 1
 // rotary encoder
 //// pin difinition
 #define pin_a 2
