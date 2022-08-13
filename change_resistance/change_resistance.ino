@@ -7,23 +7,38 @@
  *  ## ロータリーエンコーダ
  *    A相→digital 2 pin
  *    B相→digital 3 pin
- *  ## デジタルポテンショメータ
+ *  ## デジタルポテンショメータ I2C
  *    1. VDD
- *    2. B端子→GND
- *    3. SCL→A5
- *    4. SDA→A4
- *    5. W端子→デバッグ用に、10kΩ抵抗を介してArduino A0に接続。
- *    6. A端子→デバッグ用に5Vに接続。
- *    
+ *    2. B端子 ->   GND
+ *    3. SCL ->     A5
+ *    4. SDA ->     A4
+ *    5. W端子->デバッグ用に、10kΩ抵抗を介してArduino A0に接続。
+ *    6. A端子->デバッグ用に5Vに接続。
+ *  ## デジタルポテンショメータ SPI
+ *    1. SCK ->   D13
+ *    2. MISO ->  D12
+ *    3. MOSI ->  D11
+ *    4. nCS1 ->  D10
+ *    5. nCS2 ->  D8
  *  
- *  
+ *  # information about components
+ *  ## rotary encoder
  *  used rotary encoder: https://akizukidenshi.com/catalog/g/gP-00292/
  *  ref for program: http://219.117.208.26/~saka/ham/rotary_encoder/
  *  ref for circuit: https://monorepi.jp/archives/1440
- *  
- *  used digital potentiometer: MCP4018T-103E/LT https://akizukidenshi.com/catalog/g/gI-07610/
+ *
+ *  ## digital potentiometer
+ *    1. Q (I2C)
+ *      AD5243BRMZ10
+ *      https://www.analog.com/jp/products/ad5243.html
+ *    2. F (I2C)
+ *      AD5248BRMZ10
+ *      https://www.analog.com/jp/products/ad5248.html
+ *    3. F (SPI)
+ *      MAX5483EUD+T
+ *      https://www.maximintegrated.com/jp/products/analog/data-converters/digital-potentiometers/MAX5483.html
+ *
  *  ref: https://www.shujima.work/entry/2018/10/07/221909
- *  I2C address: ‘0101111’ or '0x2F'
  *  
  *  devwholeブランチでは、全てinoファイルでとりあえず作る。Arduinoライブラリ化は二の次。
  */
