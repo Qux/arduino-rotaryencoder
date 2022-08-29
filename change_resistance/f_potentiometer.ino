@@ -23,37 +23,35 @@ f_i2c.addr                = 0x2C;
 f_i2c.entire_steps        = 256;
 f_i2c.entire_resistance   = 10.0;
 pot_spi f_spi1;
-f_spi1.pin_cs             = 10;
+f_spi1.pin_cs             = pin_spi_nCS1;
 f_spi1.entire_steps       = 1024;
 f_spi1.entire_resistance  = 10.0;
 pot_spi f_spi2;
-f_spi2.pin_cs             = 8;
+f_spi2.pin_cs             = pin_spi_nCS2;
 f_spi2.entire_steps       = 1024;
 f_spi2.entire_resistance  = 10.0;
 
 
 void setup_digital_potentiometer() {
   // pinMode(A0, INPUT); // for debug
-  pinMode(8, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
-  pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);
-  
+  // spi
+  pinMode(f_spi2.pin_cs, OUTPUT);
+  pinMode(f_spi1.pin_cs, OUTPUT);
+  pinMode(pin_spi_mosi, OUTPUT);
+  pinMode(pin_spi_miso, OUTPUT);
+  pinMode(pin_spi_sck, OUTPUT);
+  digitalWrite(f_spi1.pin_cs, HIGH);
+  digitalWrite(f_spi2.pin_cs, HIGH);
+  SPI.beginTransaction(SPIsettings(7000000, MSBFIRST, SPI_MODE3));
+
   num_potentiometer = 0;
 }
 
-// set resistance of a digital potentiometer.
-// This covers both of I2C and SPI.
-// i2c_spi: 1->i2c, 0->spi
-// addr_cs: I2C address or CS for SPI.
-// num:     step count to set of potentiometer.
-void set_resistance(bool i2c_spi, int addr_cs,int num) {
-  if (i2c_spi == true) {
-    i2c_write(addr_cs, num);
-  } else {
-    // TODO: SPI
-  }
+// set resistance of a digital potentiometer supporting I2C.
+// addr_cs: I2C address.
+// num:     step count to set.
+void set_resistance_i2c(int addr,int num) {
+  i2c_write(addr, num);
 
   debug_print("resistance set ");
   debug_print(num);
@@ -61,6 +59,24 @@ void set_resistance(bool i2c_spi, int addr_cs,int num) {
   debug_print(num / (potentio_steps-1.0) * entire_res);
   debug_println(" k Ohm)");
 }
+
+// set resistance of a digital potentiometer supporting SPI.
+// pin_cs: digital pin for Chip Select
+// num: step count to set.
+// mode: 0 -> set without storing position, 1 -> set with storing position, 2 -> load stored position.
+void set_resistance_spi(int pin_cs,int num, int mode) {
+  digitalWrite(pin_cs, LOW);
+
+// TODO: modeによる場合分け
+  SPI.transfer(buffer,size);// TODO: ちゃんと書く。24bit送受信が必要。
+
+  debug_print("resistance set ");
+  debug_print(num);
+  debug_print(" (");
+  debug_print(num / (potentio_steps-1.0) * entire_res);
+  debug_println(" k Ohm)");
+}
+
 
 void get_resistance() { // TODO: change type into int and return a value
   int r = analogRead(pin_monitor_r);

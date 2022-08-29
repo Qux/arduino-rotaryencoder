@@ -38,12 +38,13 @@
  *      MAX5483EUD+T
  *      https://www.maximintegrated.com/jp/products/analog/data-converters/digital-potentiometers/MAX5483.html
  *
- *  ref: https://www.shujima.work/entry/2018/10/07/221909
+ *  ref for I2C: https://www.shujima.work/entry/2018/10/07/221909
  *  
  *  devwholeブランチでは、全てinoファイルでとりあえず作る。Arduinoライブラリ化は二の次。
  */
 
 #include <Wire.h>
+#include <SPI.h>
 
 #define debug_mode 1
 // rotary encoder
@@ -80,7 +81,7 @@ void setup() {
   setup_digital_potentiometer();
   Serial.begin(9600);
   Wire.begin();
-  
+  SPI.begin();
 }
 
 void loop() {
