@@ -10,6 +10,12 @@ void debug_print(int s)   {
 void debug_println(int s) { 
     if (debug_mode) Serial.println(s);
 }
+void debug_print(unsigned int s)   {
+    if (debug_mode) Serial.print(s);
+}
+void debug_println(unsigned int s) { 
+    if (debug_mode) Serial.println(s);
+}
 void debug_print(float s)   { 
     if (debug_mode) Serial.print(s);
 }

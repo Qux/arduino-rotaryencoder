@@ -45,6 +45,8 @@
 
 #include <Wire.h>
 #include <SPI.h>
+#include "potentiometer.h"
+
 
 #define debug_mode 1
 // rotary encoder
@@ -60,9 +62,11 @@
 //// pin difinition
 #define pin_monitor_r 0
 //// parameters
-#define potentio_steps 128
-#define entire_res 10.0 // k Ohm
-#define i2c_addr_MCP4018 0x2F
+#define pin_spi_sck  13
+#define pin_spi_miso 12
+#define pin_spi_mosi 11
+#define pin_spi_nCS1 10
+#define pin_spi_nCS2 8
 
 // variables for rotary_encoder
 volatile int a = 0;          // A相の値
@@ -86,7 +90,7 @@ void setup() {
 
 void loop() {
   if (flag_interrupt == true) {
-    num_potentiometer += interpret_rotation();
+  /*  num_potentiometer += interpret_rotation();
     // if num_potentiometer is out of range, adjust the number.
     if (num_potentiometer >= (potentio_steps - 1)) { 
       num_potentiometer = potentio_steps - 1;
@@ -99,6 +103,7 @@ void loop() {
     set_resistance(num_potentiometer);
     get_resistance();
     flag_interrupt = false;
+    */
   }
 
   // loop_set_resistance();
