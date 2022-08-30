@@ -55,5 +55,4 @@ int interpret_rotation() {
         return -1;
         break;
     }
-
 }

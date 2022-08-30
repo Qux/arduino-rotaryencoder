@@ -8,7 +8,7 @@
 #include <SPI.h>
 #endif
 #ifndef INCLUDED_potentiometer_h_
-#include "potentiometer.h"
+#include "potentiometer.hpp"
 #endif
 
 
@@ -41,7 +41,6 @@ void set_resistance_i2c(pot_i2c *pot, unsigned int wiper_pos) {
   debug_print(" (");
   debug_print(wiper_pos / (pot->entire_steps-1.0) * pot->entire_resistance);
   debug_println(" k Ohm)");
-  return;
 }
 
 // set resistance of a digital potentiometer supporting SPI.
